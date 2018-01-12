@@ -1,0 +1,34 @@
+package org.usfirst.frc.team811.robot;
+
+import edu.wpi.first.wpilibj.Relay;
+
+public interface Config {
+	
+	//ports
+	
+	int FRONT_RIGHT_PORT = 3;	
+	int FRONT_LEFT_PORT = 1;	
+	int BACK_RIGHT_PORT = 4;	
+	int BACK_LEFT_PORT = 2;		
+	
+	int DRIVE_ENCODER_PORT_1 = 2;
+	int DRIVE_ENCODER_PORT_2 = 3;
+	
+	
+	//Drive
+	double SPEED_SCALE = 0.85;
+	double DRIVE_DISTANCE_PER_PULSE = 1/9.5;	
+	double GYRO_DIFFERENCE_VALUE = 10; //TODO
+	
+	
+	//controls
+	//driver
+	int FORWARD_DRIVE_AXIS = 1;	
+	int TURN_DRIVE_AXIS = 4; 	
+	int GYRO_RESET_BUTTON = 1;
+	
+	int SERVO_AXIS = 5;	//triggers
+	int SERVO_PRESET_BUTTON = 2;
+	
+	
+}
