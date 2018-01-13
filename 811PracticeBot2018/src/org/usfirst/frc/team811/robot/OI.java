@@ -32,7 +32,7 @@ public class OI implements Config
 		//Button initialize
 		
 		
-		gyro_reset = new JoystickButton(RobotMap.joystick1, GYRO_RESET_BUTTON);
+		//gyro_reset = new JoystickButton(RobotMap.joystick1, GYRO_RESET_BUTTON);
 		//gyro_reset.whenPressed(new gyro_reset());
 		
 		//SmartDashboard buttons

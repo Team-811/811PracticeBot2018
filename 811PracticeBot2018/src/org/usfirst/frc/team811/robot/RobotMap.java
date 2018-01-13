@@ -32,7 +32,7 @@ public class RobotMap implements Config
     public static PIDController pid;
     public static AHRS ahrs;
     public static PIDController turnController;
-    public static Ultrasonic ultra;
+    public static AnalogInput ultra;
     
 
     
@@ -54,7 +54,7 @@ public class RobotMap implements Config
         driveEncoder.setReverseDirection(false);
         driveEncoder.setDistancePerPulse(DRIVE_DISTANCE_PER_PULSE);
         ahrs = new AHRS(SPI.Port.kMXP);
-        ultra = new Ultrasonic(ULTRA_PORT,ULTRA_PORT);
+        ultra = new AnalogInput(ULTRA_PORT);
         
        
     }

@@ -28,7 +28,7 @@ import org.usfirst.frc.team811.robot.subsystems.*;
 public class Robot extends IterativeRobot 
 {
 	public static Drive drive;
-	public static Ultrasonic ultra;
+	//public static Ultrasonic ultra;
 	
 	public static OI oi;
 	public static RobotMap robotMap;
@@ -52,7 +52,7 @@ public class Robot extends IterativeRobot
 		oi = new OI();
 		// System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
 		
-		ultra.setAutomaticMode(true);
+		//ultra.setAutomaticMode(true);
 
 		
 	}
@@ -115,7 +115,7 @@ public class Robot extends IterativeRobot
 				RobotMap.driveEncoder.get());
 		
 		SmartDashboard.putNumber("ultrasthingggy", 
-				RobotMap.ultra.getRangeInches());
+				RobotMap.ultra.getValue());
 	
 	}
 
