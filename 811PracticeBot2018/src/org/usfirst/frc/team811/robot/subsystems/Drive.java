@@ -15,7 +15,6 @@ import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.PIDOutput;
-import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.Timer;
@@ -56,12 +55,12 @@ public class Drive extends Subsystem implements Config {
     		moveVal = -joy1.getRawAxis(FORWARD_DRIVE_AXIS);
     	}
     	
-    	if ((joy1.getRawAxis(TURN_DRIVE_AXIS) < .2) && (joy1.getRawAxis(TURN_DRIVE_AXIS) > -.2)) { 
-    		ahrs.reset();
-    		turnVal = ahrs.getYaw() * -.1;
-    	} else {
-    		turnVal = joy1.getRawAxis(TURN_DRIVE_AXIS);
-    	}
+    	//if ((joy1.getRawAxis(TURN_DRIVE_AXIS) < .2) && (joy1.getRawAxis(TURN_DRIVE_AXIS) > -.2)) { 
+    		//ahrs.reset();
+    		//turnVal = ahrs.getYaw() * -.1;
+    	//} else {
+    		turnVal = -joy1.getRawAxis(TURN_DRIVE_AXIS);
+    	//}
     	
     	//driveTrain.arcadeDrive(-1 * moveVal * SPEED_SCALE, turnVal * SPEED_SCALE);
     	driveTrain.arcadeDrive(-1 * moveVal * SPEED_SCALE, turnVal * SPEED_SCALE);

@@ -30,8 +30,8 @@ public class Robot extends IterativeRobot
 	public static OI oi;
 	public static RobotMap robotMap;
 	
-	Command autonomousCommand;
-	SendableChooser autoChooser;
+	//Command autonomousCommand;
+	//SendableChooser autoChooser;
 
 	/**
 	 * This function is run when the robot is first started up and should be
@@ -60,8 +60,10 @@ public class Robot extends IterativeRobot
 	public void autonomousInit() 
 	{
 		// schedule the autonomous command (example)
+		/*
 		autonomousCommand = ;
 		autonomousCommand.start();
+		*/
 	}
 
 	/**
@@ -79,8 +81,8 @@ public class Robot extends IterativeRobot
 		// teleop starts running. If you want the autonomous to
 		// continue until interrupted by another command, remove
 		// this line or comment it out.
-		if (autonomousCommand != null)
-			autonomousCommand.cancel();
+		//if (autonomousCommand != null)
+		//	autonomousCommand.cancel();
 	}
 
 	/**
