@@ -26,7 +26,8 @@ public class RobotMap implements Config
 	public static SpeedController drivefrontright;
     public static SpeedController drivebackright;
     public static SpeedControllerGroup driveRight;
-    public static Encoder driveEncoder;
+    public static Encoder driveEncoderLeft;
+    public static Encoder driveEncoderRight;
     public static DifferentialDrive driveTrain;
     public static AnalogGyro driveGyro;
     public static PIDController pid;
@@ -50,9 +51,13 @@ public class RobotMap implements Config
         drivebackright = new Talon(BACK_RIGHT_PORT);
         driveRight = new SpeedControllerGroup(drivefrontright, drivebackright);
         driveTrain = new DifferentialDrive(driveLeft, driveRight);
-        driveEncoder = new Encoder(DRIVE_ENCODER_PORT_1, DRIVE_ENCODER_PORT_2);
-        driveEncoder.setReverseDirection(false);
-        driveEncoder.setDistancePerPulse(DRIVE_DISTANCE_PER_PULSE);
+        
+        driveEncoderLeft = new Encoder(DRIVE_ENCODER_PORT_LEFT_1, DRIVE_ENCODER_PORT_LEFT_2);
+        driveEncoderLeft.setReverseDirection(false);
+
+        driveEncoderRight = new Encoder(DRIVE_ENCODER_PORT_RIGHT_1, DRIVE_ENCODER_PORT_RIGHT_2);
+        driveEncoderRight.setReverseDirection(false);
+        
         ahrs = new AHRS(SPI.Port.kMXP);
         ultra = new AnalogInput(ULTRA_PORT);
         

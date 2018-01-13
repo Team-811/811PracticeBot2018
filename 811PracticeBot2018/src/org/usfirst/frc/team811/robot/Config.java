@@ -12,8 +12,11 @@ public interface Config {
 	int BACK_RIGHT_PORT = 4;	
 	int BACK_LEFT_PORT = 2;		
 	
-	int DRIVE_ENCODER_PORT_1 = 2;
-	int DRIVE_ENCODER_PORT_2 = 3;
+	int DRIVE_ENCODER_PORT_LEFT_1 = 2;
+	int DRIVE_ENCODER_PORT_LEFT_2 = 3;
+	
+	int DRIVE_ENCODER_PORT_RIGHT_1 = 2;
+	int DRIVE_ENCODER_PORT_RIGHT_2 = 3;
 	
 	int ULTRA_PORT = 0; //TODO
 	

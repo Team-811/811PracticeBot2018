@@ -33,7 +33,7 @@ public class Robot extends IterativeRobot
 	public static OI oi;
 	public static RobotMap robotMap;
 	
-	//Command autonomousCommand;
+	Command autonomousCommand;
 	//SendableChooser autoChooser;
 
 	/**
@@ -53,7 +53,7 @@ public class Robot extends IterativeRobot
 		// System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
 		
 		//ultra.setAutomaticMode(true);
-
+		drive.generateTrajectory();
 		
 	}
 
@@ -65,10 +65,10 @@ public class Robot extends IterativeRobot
 	public void autonomousInit() 
 	{
 		// schedule the autonomous command (example)
-		/*
-		autonomousCommand = ;
+		
+		autonomousCommand = new auto_follow_trajectory();
 		autonomousCommand.start();
-		*/
+		
 	}
 
 	/**
@@ -107,12 +107,10 @@ public class Robot extends IterativeRobot
 		Scheduler.getInstance().run();
 
 		SmartDashboard.putNumber("gyro value", RobotMap.ahrs.getYaw());
-		SmartDashboard.putNumber("drive encoder distance",
-				RobotMap.driveEncoder.getDistance());
-		SmartDashboard.putNumber("drive encoder raw",
-				RobotMap.driveEncoder.getRaw());
-		SmartDashboard.putNumber("drive encoder get",
-				RobotMap.driveEncoder.get());
+		SmartDashboard.putNumber("drive encoder left",
+				RobotMap.driveEncoderLeft.getRaw());
+		SmartDashboard.putNumber("drive encoder right",
+				RobotMap.driveEncoderRight.getRaw());
 		
 		SmartDashboard.putNumber("ultrasthingggy", 
 				RobotMap.ultra.getValue());

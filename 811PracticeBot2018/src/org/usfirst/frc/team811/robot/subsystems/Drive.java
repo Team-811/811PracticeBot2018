@@ -24,6 +24,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import jaci.pathfinder.Pathfinder;
 import jaci.pathfinder.Trajectory;
 import jaci.pathfinder.Waypoint;
+import jaci.pathfinder.followers.EncoderFollower;
 import jaci.pathfinder.modifiers.TankModifier;
 
 /**
@@ -40,7 +41,9 @@ public class Drive extends Subsystem implements Config {
     SpeedController backright = RobotMap.drivebackright;
     SpeedControllerGroup right = RobotMap.driveRight;
     DifferentialDrive driveTrain = RobotMap.driveTrain;
-    Encoder driveEncoder = RobotMap.driveEncoder;
+    Encoder driveEncoderLeft = RobotMap.driveEncoderLeft;
+    Encoder driveEncoderRight = RobotMap.driveEncoderRight;
+    		
     //AnalogGyro driveGyro = RobotMap.driveGyro;
     AHRS ahrs = RobotMap.ahrs;
     PIDController turnController = RobotMap.turnController;
@@ -80,6 +83,7 @@ public class Drive extends Subsystem implements Config {
     	setDefaultCommand(new drive_w_joysticks());
     }
     
+    /*
     public void driveAuto(double driveDistance) {		//TODO drive distance!
     	double turnVal = ahrs.getAngle();
     	
@@ -89,7 +93,7 @@ public class Drive extends Subsystem implements Config {
     		driveTrain.tankDrive(-.3, -.4);
     	}
     }
-    
+    */
     
     
     public void gyroReset() {
@@ -99,6 +103,10 @@ public class Drive extends Subsystem implements Config {
     
     public void generateTrajectory() 
     {
+    	
+    	double wheel_diameter = 0.206375;
+    	double max_velocity = 1.7;
+    	
     	Waypoint[] points = new Waypoint[] {
     		    new Waypoint(-4, -1, Pathfinder.d2r(-45)),      // Waypoint @ x=-4, y=-1, exit angle=-45 degrees
     		    new Waypoint(-2, -2, 0),                        // Waypoint @ x=-2, y=-2, exit angle=0 radians
@@ -108,6 +116,27 @@ public class Drive extends Subsystem implements Config {
     		Trajectory.Config config = new Trajectory.Config(Trajectory.FitMethod.HERMITE_QUINTIC, Trajectory.Config.SAMPLES_HIGH, 0.05, 1.7, 2.0, 60.0);
     		Trajectory trajectory = Pathfinder.generate(points, config);
     		TankModifier modifier = new TankModifier(trajectory).modify(0.3683);
+    		EncoderFollower leftFollower = new EncoderFollower(modifier.getLeftTrajectory());
+    		EncoderFollower rightFollower = new EncoderFollower(modifier.getRightTrajectory());
+    		leftFollower.configureEncoder(driveEncoderLeft.getRaw(), 1000, wheel_diameter);
+    		rightFollower.configureEncoder(driveEncoderRight.getRaw(), 1000, wheel_diameter);
+    		leftFollower.configurePIDVA(1.0, 0.0, 0.0, 1 / max_velocity, 0);
+    		rightFollower.configurePIDVA(1.0, 0.0, 0.0, 1 / max_velocity, 0);
+    }
+    
+    public void followTrajectory()
+    {
+    	
+    	double l = leftFollower.calculate(driveEncoderLeft.getRaw());
+    	double r = rightFollower.calculate(driveEncoderRight.getRaw());
+
+    	double gyro_heading = ahrs.getYaw();   // Assuming the gyro is giving a value in degrees
+    	double desired_heading = Pathfinder.r2d(leftFollower.getHeading());  // Should also be in degrees
+
+    	double angleDifference = Pathfinder.boundHalfDegrees(desired_heading - gyro_heading);
+    	double turn = 0.8 * (-1.0/80.0) * angleDifference;
+
+    	driveTrain.arcadeDrive(l + turn, r - turn);
     }
 	
 
