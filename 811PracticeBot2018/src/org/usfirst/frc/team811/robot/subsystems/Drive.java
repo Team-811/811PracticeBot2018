@@ -21,6 +21,10 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import jaci.pathfinder.Pathfinder;
+import jaci.pathfinder.Trajectory;
+import jaci.pathfinder.Waypoint;
+import jaci.pathfinder.modifiers.TankModifier;
 
 /**
  *
@@ -91,8 +95,22 @@ public class Drive extends Subsystem implements Config {
     public void gyroReset() {
     	ahrs.reset();
     }
+    
+    
+    public void generateTrajectory() 
+    {
+    	Waypoint[] points = new Waypoint[] {
+    		    new Waypoint(-4, -1, Pathfinder.d2r(-45)),      // Waypoint @ x=-4, y=-1, exit angle=-45 degrees
+    		    new Waypoint(-2, -2, 0),                        // Waypoint @ x=-2, y=-2, exit angle=0 radians
+    		    new Waypoint(0, 0, 0)                           // Waypoint @ x=0, y=0,   exit angle=0 radians
+    		};
+
+    		Trajectory.Config config = new Trajectory.Config(Trajectory.FitMethod.HERMITE_QUINTIC, Trajectory.Config.SAMPLES_HIGH, 0.05, 1.7, 2.0, 60.0);
+    		Trajectory trajectory = Pathfinder.generate(points, config);
+    		TankModifier modifier = new TankModifier(trajectory).modify(0.3683);
+    }
 	
 
-	
+	 
 }
 
