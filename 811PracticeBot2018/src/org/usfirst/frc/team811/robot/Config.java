@@ -2,6 +2,7 @@ package org.usfirst.frc.team811.robot;
 
 import edu.wpi.first.wpilibj.Relay;
 
+
 public interface Config {
 	
 	//ports
@@ -14,11 +15,13 @@ public interface Config {
 	int DRIVE_ENCODER_PORT_1 = 2;
 	int DRIVE_ENCODER_PORT_2 = 3;
 	
+	int ULTRA_PORT = 0; //TODO
 	
 	//Drive
 	double SPEED_SCALE = 0.85;
 	double DRIVE_DISTANCE_PER_PULSE = 1/9.5;	
 	double GYRO_DIFFERENCE_VALUE = 10; //TODO
+
 	
 	
 	//controls
