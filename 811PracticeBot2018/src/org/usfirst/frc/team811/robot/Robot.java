@@ -2,6 +2,7 @@ package org.usfirst.frc.team811.robot;
 
 import java.io.IOException;
 
+import org.usfirst.frc.team811.robot.subsystems.*;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.Ultrasonic;
@@ -30,6 +31,7 @@ public class Robot extends IterativeRobot
 	public static Drive drive;
 	//public static Ultrasonic ultra;
 	
+	
 	public static OI oi;
 	public static RobotMap robotMap;
 	
@@ -51,9 +53,11 @@ public class Robot extends IterativeRobot
 
 		oi = new OI();
 		// System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
-		
-		//ultra.setAutomaticMode(true);
 		drive.generateTrajectory();
+		//ultra.setAutomaticMode(true);
+		
+		
+		
 		
 	}
 
@@ -65,7 +69,7 @@ public class Robot extends IterativeRobot
 	public void autonomousInit() 
 	{
 		// schedule the autonomous command (example)
-		
+		drive.configureFollower();
 		autonomousCommand = new auto_follow_trajectory();
 		autonomousCommand.start();
 		
@@ -86,10 +90,15 @@ public class Robot extends IterativeRobot
 		// teleop starts running. If you want the autonomous to
 		// continue until interrupted by another command, remove
 		// this line or comment it out.
-		//if (autonomousCommand != null)
-		//	autonomousCommand.cancel();
+		if (autonomousCommand != null)
+			autonomousCommand.cancel();
+		
+		RobotMap.driveEncoderLeft.reset();
+    	RobotMap.driveEncoderRight.reset();
+    	RobotMap.ahrs.zeroYaw();
+		
+		
 	}
-
 	/**
 	 * This function is called when the disabled button is hit. You can use it
 	 * to reset subsystems before shutting down.
@@ -106,7 +115,7 @@ public class Robot extends IterativeRobot
 	{
 		Scheduler.getInstance().run();
 
-		SmartDashboard.putNumber("gyro value", RobotMap.ahrs.getYaw());
+		SmartDashboard.putNumber("gyro value", RobotMap.ahrs.getAngle());
 		SmartDashboard.putNumber("drive encoder left",
 				RobotMap.driveEncoderLeft.getRaw());
 		SmartDashboard.putNumber("drive encoder right",

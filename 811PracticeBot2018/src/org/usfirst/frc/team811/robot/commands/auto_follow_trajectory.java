@@ -20,7 +20,7 @@ public class auto_follow_trajectory extends Command {
     protected void initialize() {
     	RobotMap.driveEncoderLeft.reset();
     	RobotMap.driveEncoderRight.reset();
-    	RobotMap.ahrs.reset();
+    	RobotMap.ahrs.zeroYaw();
     	
     }
 
