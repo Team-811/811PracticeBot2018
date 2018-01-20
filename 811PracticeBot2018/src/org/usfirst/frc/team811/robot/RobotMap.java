@@ -42,8 +42,11 @@ public class RobotMap implements Config
     	//initialize
     	joystick1 = new Joystick(1);
         joystick2 = new Joystick(2);
-    	
-    	
+
+        ultra = new AnalogInput(ULTRA_PORT);
+        ultra.setOversampleBits(4);
+        ultra.setAverageBits(2);
+            	
         drivefrontleft = new Talon(FRONT_LEFT_PORT);
         drivebackleft = new Talon(BACK_LEFT_PORT);
         driveLeft = new SpeedControllerGroup(drivefrontleft, drivebackleft);
@@ -53,13 +56,12 @@ public class RobotMap implements Config
         driveTrain = new DifferentialDrive(driveLeft, driveRight);
         
         driveEncoderLeft = new Encoder(DRIVE_ENCODER_PORT_LEFT_1, DRIVE_ENCODER_PORT_LEFT_2);
-        driveEncoderLeft.setReverseDirection(false);
+        driveEncoderLeft.setReverseDirection(true);
 
         driveEncoderRight = new Encoder(DRIVE_ENCODER_PORT_RIGHT_1, DRIVE_ENCODER_PORT_RIGHT_2);
         driveEncoderRight.setReverseDirection(false);
         
         ahrs = new AHRS(SPI.Port.kMXP);
-        ultra = new AnalogInput(ULTRA_PORT);
         
        
     }

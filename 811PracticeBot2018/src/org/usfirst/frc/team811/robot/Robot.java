@@ -115,14 +115,16 @@ public class Robot extends IterativeRobot
 	{
 		Scheduler.getInstance().run();
 
-		SmartDashboard.putNumber("gyro value", RobotMap.ahrs.getAngle());
+		SmartDashboard.putNumber("gyro value yaw", RobotMap.ahrs.getYaw());	
+		SmartDashboard.putNumber("gyro value", RobotMap.ahrs.getAngle());	
+		SmartDashboard.putString("yaw axis", RobotMap.ahrs.getBoardYawAxis().board_axis.toString());
 		SmartDashboard.putNumber("drive encoder left",
 				RobotMap.driveEncoderLeft.getRaw());
 		SmartDashboard.putNumber("drive encoder right",
 				RobotMap.driveEncoderRight.getRaw());
 		
 		SmartDashboard.putNumber("ultrasthingggy", 
-				RobotMap.ultra.getValue());
+				RobotMap.ultra.getAverageValue());
 	
 	}
 

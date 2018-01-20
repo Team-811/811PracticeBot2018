@@ -51,6 +51,14 @@ public class Drive extends Subsystem implements Config {
     AHRS ahrs = RobotMap.ahrs;
     PIDController turnController = RobotMap.turnController;
     
+    double max_velocity = 1.7;
+    double max_acceleration = 2.0;
+    double max_jerk = 60.0;
+    double wheel_diameter = 0.206375;
+    int encoder_rotation = 1000;
+    double kI = 0.0;
+    double kP = 1.0;
+    
     
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
@@ -114,29 +122,29 @@ public class Drive extends Subsystem implements Config {
 				new Waypoint(0, 0, 0) // Waypoint @ x=0, y=0, exit angle=0 radians
 		};
 
-		Trajectory.Config config = new Trajectory.Config(Trajectory.FitMethod.HERMITE_QUINTIC, Trajectory.Config.SAMPLES_HIGH, 0.05, 1.7, 2.0, 60.0);
+		Trajectory.Config config = new Trajectory.Config(Trajectory.FitMethod.HERMITE_QUINTIC, Trajectory.Config.SAMPLES_HIGH, 0.05, max_velocity, max_acceleration, max_jerk);
 		trajectory = Pathfinder.generate(points, config);
 		TankModifier modifier = new TankModifier(trajectory).modify(0.3683);
 		leftFollower = new EncoderFollower(modifier.getLeftTrajectory());
 		rightFollower = new EncoderFollower(modifier.getRightTrajectory());
 		
+		/*
 		for (int i = 0; i < trajectory.length(); i++) {
 		    Trajectory.Segment seg = trajectory.get(i);
 		    
 		    System.out.printf("%f,%f,%f,%f,%f,%f,%f,%f\n", 
 		        seg.dt, seg.x, seg.y, seg.position, seg.velocity, 
 		            seg.acceleration, seg.jerk, seg.heading);
+		 
 		}
-		
+		*/
 	}
 	public void configureFollower() {
-		double wheel_diameter = 0.206375;
-		double max_velocity = 1.7;
 		
-		leftFollower.configureEncoder(driveEncoderLeft.getRaw() * -1, 1000, wheel_diameter);
-		rightFollower.configureEncoder(driveEncoderRight.getRaw(), 1000, wheel_diameter);
-		leftFollower.configurePIDVA(1, 0.0, 0.0, 1 / max_velocity, 0.3);
-		rightFollower.configurePIDVA(1, 0.0, 0.0, 1 / max_velocity, 0.3);
+		leftFollower.configureEncoder(driveEncoderLeft.getRaw() , encoder_rotation, wheel_diameter);
+		rightFollower.configureEncoder(driveEncoderRight.getRaw(), encoder_rotation, wheel_diameter);
+		leftFollower.configurePIDVA(kP, 0.0, kP, 1 / max_velocity, 0.3);
+		rightFollower.configurePIDVA(kP, 0.0, kP, 1 / max_velocity, 0.3);
 		
 		
 		
@@ -144,16 +152,16 @@ public class Drive extends Subsystem implements Config {
 
 	public void followTrajectory() {
 
-		double l = leftFollower.calculate(driveEncoderLeft.getRaw() * -1);
+		double l = leftFollower.calculate(driveEncoderLeft.getRaw());
 		double r = rightFollower.calculate(driveEncoderRight.getRaw());
 
-		//double gyro_heading = ahrs.getYaw(); // Assuming the gyro is giving a value in degrees
-		//double desired_heading = Pathfinder.r2d(leftFollower.getHeading()); // Should also be in degrees
+		double gyro_heading = ahrs.getYaw(); // Assuming the gyro is giving a value in degrees
+		double desired_heading = Pathfinder.r2d(leftFollower.getHeading()); // Should also be in degrees
 
-		//double angleDifference = Pathfinder.boundHalfDegrees(desired_heading - gyro_heading);
-		//double turn = 0.8 * (-1.0 / 80.0) * angleDifference;
+		double angleDifference = Pathfinder.boundHalfDegrees(desired_heading - gyro_heading);
+		double turn = 0.8 * (-1.0 / 80.0) * angleDifference;
 
-		driveTrain.tankDrive(-l , -r );
+		driveTrain.tankDrive(-l + turn , -r - turn);
 	}	
 
 	 
