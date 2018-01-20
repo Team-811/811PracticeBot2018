@@ -55,9 +55,13 @@ public class Drive extends Subsystem implements Config {
     double max_acceleration = 2.0;
     double max_jerk = 60.0;
     double wheel_diameter = 0.206375;
+    double wheel_base_distance = 0.3683;
     int encoder_rotation = 1000;
     double kI = 0.0;
     double kP = 1.0;
+    double acceleration_gain = 0.3;
+    //TODO
+    double absolute_max_velocity = 1.7;
     
     
     // Put methods for controlling this subsystem
@@ -124,7 +128,7 @@ public class Drive extends Subsystem implements Config {
 
 		Trajectory.Config config = new Trajectory.Config(Trajectory.FitMethod.HERMITE_QUINTIC, Trajectory.Config.SAMPLES_HIGH, 0.05, max_velocity, max_acceleration, max_jerk);
 		trajectory = Pathfinder.generate(points, config);
-		TankModifier modifier = new TankModifier(trajectory).modify(0.3683);
+		TankModifier modifier = new TankModifier(trajectory).modify(wheel_base_distance);
 		leftFollower = new EncoderFollower(modifier.getLeftTrajectory());
 		rightFollower = new EncoderFollower(modifier.getRightTrajectory());
 		
@@ -143,8 +147,8 @@ public class Drive extends Subsystem implements Config {
 		
 		leftFollower.configureEncoder(driveEncoderLeft.getRaw() , encoder_rotation, wheel_diameter);
 		rightFollower.configureEncoder(driveEncoderRight.getRaw(), encoder_rotation, wheel_diameter);
-		leftFollower.configurePIDVA(kP, 0.0, kP, 1 / max_velocity, 0.3);
-		rightFollower.configurePIDVA(kP, 0.0, kP, 1 / max_velocity, 0.3);
+		leftFollower.configurePIDVA(kP, 0.0, kP, 1 / absolute_max_velocity, acceleration_gain);
+		rightFollower.configurePIDVA(kP, 0.0, kP, 1 / absolute_max_velocity, acceleration_gain);
 		
 		
 		
