@@ -112,7 +112,7 @@ public class Robot extends IterativeRobot
 	 * This function is called periodically during operator control
 	 */
 	public void teleopPeriodic()
-	{
+	{s
 		Scheduler.getInstance().run();
 
 		SmartDashboard.putNumber("gyro value yaw", RobotMap.ahrs.getYaw());	
@@ -123,8 +123,10 @@ public class Robot extends IterativeRobot
 		SmartDashboard.putNumber("drive encoder right",
 				RobotMap.driveEncoderRight.getRaw());
 		
-		SmartDashboard.putNumber("ultrasthingggy", 
-				RobotMap.ultra.getAverageValue());
+		SmartDashboard.putNumber("ultrasthingggy raw", 
+				RobotMap.ultra.getValue()); //in millimeters for 2^OverSampleBits millimeter
+		SmartDashboard.putNumber("ultrasthingggy avg", 
+				RobotMap.ultra.getAverageValue()); //16 times the raw, 16 millimeter ticks 
 	
 	}
 
