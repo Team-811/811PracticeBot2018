@@ -64,7 +64,7 @@ public class Drive extends Subsystem implements Config {
     double absolute_max_velocity = 1.7;
     
     
-    // Put methods for controlling this subsystem
+    // Put methods for controlling this subsystem/
     // here. Call these from Commands.
     public void driveWithJoy() {
     	
