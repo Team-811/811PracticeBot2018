@@ -51,17 +51,17 @@ public class Drive extends Subsystem implements Config {
     AHRS ahrs = RobotMap.ahrs;
     PIDController turnController = RobotMap.turnController;
     
-    double max_velocity = 1.7;
-    double max_acceleration = 2.0;
+    double max_velocity = 0.7;
+    double max_acceleration = 0.8;
     double max_jerk = 60.0;
-    double wheel_diameter = 0.206375;
+    double wheel_diameter = 0.219;
     double wheel_base_distance = 0.3683;
-    int encoder_rotation = 1000;
+    int encoder_rotation = 1024;
     double kI = 0.0;
     double kP = 1.0;
     double acceleration_gain = 0.3;
     //TODO
-    double absolute_max_velocity = 1.7;
+    double absolute_max_velocity = 0.78;
     
     
     // Put methods for controlling this subsystem/
@@ -120,19 +120,21 @@ public class Drive extends Subsystem implements Config {
 
 		
 
-		Waypoint[] points = new Waypoint[] { new Waypoint(-5, -0, 0), // Waypoint @ x=-4, y=-1, exit
-																						// angle=-45 degrees
-				new Waypoint(-2, 0, 0), // Waypoint @ x=-2, y=-2, exit angle=0 radians
-				new Waypoint(0, 0, 0) // Waypoint @ x=0, y=0, exit angle=0 radians
+		Waypoint[] points = new Waypoint[] {
+				new Waypoint(0, 0, 0), 
+																						
+				new Waypoint(3, -1, Pathfinder.d2r(-45)), // Waypoint @ x=-2, y=-2, exit angle=0 radians
+				//new Waypoint(6, 0, 0),
+				//new Waypoint(2,-2,Pathfinder.d2r(-90))
 		};
 
-		Trajectory.Config config = new Trajectory.Config(Trajectory.FitMethod.HERMITE_QUINTIC, Trajectory.Config.SAMPLES_HIGH, 0.05, max_velocity, max_acceleration, max_jerk);
+		Trajectory.Config config = new Trajectory.Config(Trajectory.FitMethod.HERMITE_CUBIC, Trajectory.Config.SAMPLES_HIGH, 0.05, max_velocity, max_acceleration, max_jerk);
 		trajectory = Pathfinder.generate(points, config);
 		TankModifier modifier = new TankModifier(trajectory).modify(wheel_base_distance);
 		leftFollower = new EncoderFollower(modifier.getLeftTrajectory());
 		rightFollower = new EncoderFollower(modifier.getRightTrajectory());
 		
-		/*
+		
 		for (int i = 0; i < trajectory.length(); i++) {
 		    Trajectory.Segment seg = trajectory.get(i);
 		    
@@ -141,7 +143,7 @@ public class Drive extends Subsystem implements Config {
 		            seg.acceleration, seg.jerk, seg.heading);
 		 
 		}
-		*/
+		
 	}
 	public void configureFollower() {
 		
@@ -159,13 +161,13 @@ public class Drive extends Subsystem implements Config {
 		double l = leftFollower.calculate(driveEncoderLeft.getRaw());
 		double r = rightFollower.calculate(driveEncoderRight.getRaw());
 
-		double gyro_heading = ahrs.getYaw(); // Assuming the gyro is giving a value in degrees
+		double gyro_heading = ahrs.getYaw() * -1; // Assuming the gyro is giving a value in degrees
 		double desired_heading = Pathfinder.r2d(leftFollower.getHeading()); // Should also be in degrees
 
 		double angleDifference = Pathfinder.boundHalfDegrees(desired_heading - gyro_heading);
 		double turn = 0.8 * (-1.0 / 80.0) * angleDifference;
 
-		driveTrain.tankDrive(-l + turn , -r - turn);
+		driveTrain.tankDrive(-l - turn , -r + turn);
 	}	
 
 	 

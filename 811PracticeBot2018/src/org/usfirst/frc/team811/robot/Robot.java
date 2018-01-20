@@ -54,6 +54,8 @@ public class Robot extends IterativeRobot
 		oi = new OI();
 		// System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
 		drive.generateTrajectory();
+		
+		
 		//ultra.setAutomaticMode(true);
 		
 		
@@ -69,7 +71,7 @@ public class Robot extends IterativeRobot
 	public void autonomousInit() 
 	{
 		// schedule the autonomous command (example)
-		drive.configureFollower();
+		System.out.println("humor me");
 		autonomousCommand = new auto_follow_trajectory();
 		autonomousCommand.start();
 		
@@ -112,7 +114,7 @@ public class Robot extends IterativeRobot
 	 * This function is called periodically during operator control
 	 */
 	public void teleopPeriodic()
-	{s
+	{
 		Scheduler.getInstance().run();
 
 		SmartDashboard.putNumber("gyro value yaw", RobotMap.ahrs.getYaw());	
@@ -122,7 +124,7 @@ public class Robot extends IterativeRobot
 				RobotMap.driveEncoderLeft.getRaw());
 		SmartDashboard.putNumber("drive encoder right",
 				RobotMap.driveEncoderRight.getRaw());
-		
+		SmartDashboard.putNumber("speed", RobotMap.driveEncoderLeft.getRate());
 		SmartDashboard.putNumber("ultrasthingggy raw", 
 				RobotMap.ultra.getValue()); //in millimeters for 2^OverSampleBits millimeter
 		SmartDashboard.putNumber("ultrasthingggy avg", 

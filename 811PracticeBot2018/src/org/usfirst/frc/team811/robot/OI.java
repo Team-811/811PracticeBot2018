@@ -37,5 +37,7 @@ public class OI implements Config
 		
 		//SmartDashboard buttons
 		
+		SmartDashboard.putData("follow trajectory", new auto_follow_trajectory());
+		
 	}
 }

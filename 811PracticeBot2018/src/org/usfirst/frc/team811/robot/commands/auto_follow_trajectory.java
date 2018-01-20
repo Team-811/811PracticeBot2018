@@ -21,6 +21,7 @@ public class auto_follow_trajectory extends Command {
     	RobotMap.driveEncoderLeft.reset();
     	RobotMap.driveEncoderRight.reset();
     	RobotMap.ahrs.zeroYaw();
+    	Robot.drive.configureFollower();
     	
     }
 

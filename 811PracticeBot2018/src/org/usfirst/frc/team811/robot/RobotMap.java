@@ -57,6 +57,7 @@ public class RobotMap implements Config
         
         driveEncoderLeft = new Encoder(DRIVE_ENCODER_PORT_LEFT_1, DRIVE_ENCODER_PORT_LEFT_2);
         driveEncoderLeft.setReverseDirection(true);
+        driveEncoderLeft.setDistancePerPulse(1/1513.0);
 
         driveEncoderRight = new Encoder(DRIVE_ENCODER_PORT_RIGHT_1, DRIVE_ENCODER_PORT_RIGHT_2);
         driveEncoderRight.setReverseDirection(false);
