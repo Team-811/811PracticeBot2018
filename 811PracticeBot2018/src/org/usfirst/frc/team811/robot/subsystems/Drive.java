@@ -51,14 +51,14 @@ public class Drive extends Subsystem implements Config {
     AHRS ahrs = RobotMap.ahrs;
     PIDController turnController = RobotMap.turnController;
     
-    double max_velocity = 0.7;
+    double max_velocity = 0.72;
     double max_acceleration = 0.8;
     double max_jerk = 60.0;
-    double wheel_diameter = 0.219;
-    double wheel_base_distance = 0.3683;
+    double wheel_diameter = 0.2225;
+    double wheel_base_distance = 0.3759;
     int encoder_rotation = 1024;
-    double kI = 0.0;
-    double kP = 1.0;
+    double kD = 0.0;
+    double kP = 1;
     double acceleration_gain = 0.3;
     //TODO
     double absolute_max_velocity = 0.78;
@@ -123,8 +123,8 @@ public class Drive extends Subsystem implements Config {
 		Waypoint[] points = new Waypoint[] {
 				new Waypoint(0, 0, 0), 
 																						
-				new Waypoint(3, -1, Pathfinder.d2r(-45)), // Waypoint @ x=-2, y=-2, exit angle=0 radians
-				//new Waypoint(6, 0, 0),
+				//new Waypoint(3, 0, Pathfinder.d2r(50)), // Waypoint @ x=-2, y=-2, exit angle=0 radians
+				new Waypoint(3, 0, 0),
 				//new Waypoint(2,-2,Pathfinder.d2r(-90))
 		};
 
@@ -149,8 +149,8 @@ public class Drive extends Subsystem implements Config {
 		
 		leftFollower.configureEncoder(driveEncoderLeft.getRaw() , encoder_rotation, wheel_diameter);
 		rightFollower.configureEncoder(driveEncoderRight.getRaw(), encoder_rotation, wheel_diameter);
-		leftFollower.configurePIDVA(kP, 0.0, kP, 1 / absolute_max_velocity, acceleration_gain);
-		rightFollower.configurePIDVA(kP, 0.0, kP, 1 / absolute_max_velocity, acceleration_gain);
+		leftFollower.configurePIDVA(kP, 0.0, kD, 1 / absolute_max_velocity, acceleration_gain);
+		rightFollower.configurePIDVA(kP, 0.0, kD, 1 / absolute_max_velocity, acceleration_gain);
 		
 		
 		
