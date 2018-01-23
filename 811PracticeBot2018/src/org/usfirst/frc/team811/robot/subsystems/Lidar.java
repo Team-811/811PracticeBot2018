@@ -64,7 +64,7 @@ public class Lidar extends Subsystem{
 	private class LIDARUpdater extends TimerTask {
 		public void run() {
 			while(true) {
-				update();
+				update(); 
 //				if(getDistance() < 90 && getDistance() > 84){
 //					SmartDashboard.putBoolean("Correct distance from human feeder", true);
 //				}
