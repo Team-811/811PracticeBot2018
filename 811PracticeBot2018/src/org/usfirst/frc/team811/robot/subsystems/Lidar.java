@@ -87,6 +87,18 @@ public class Lidar extends Subsystem{
 			}
 		}
 	}
+	public static void scanForDevice() {
+		for (int address=1; address <= 126; address++) {
+			I2C i2c = new I2C(Port.kOnboard, address);
+			boolean aborted = i2c.addressOnly();
+			if (!aborted){
+				System.out.print("Address found at ");
+				System.out.println(address);
+				return;
+			}
+			
+			System.out.println("No devices found.");
+	}
 
 	@Override
 	protected void initDefaultCommand() {
