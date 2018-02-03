@@ -96,8 +96,8 @@ public class Lidar extends Subsystem{
 				System.out.println(address);
 				return;
 			}
-			
-			System.out.println("No devices found.");
+		}		
+		System.out.println("No devices found.");
 	}
 
 	@Override
